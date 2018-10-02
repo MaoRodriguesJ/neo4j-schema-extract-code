@@ -30,16 +30,18 @@ function create_docker_folder {
     "-c")
         create_c
         echo "Creating cineasts dataset!"
+        docker_run "$2"
         ;;
     "-d")
         create_d
         echo "Creating drwho dataset!"
+        docker_run "$2"
         ;;
     *)
         echo "Creating empty dataset!"
+        docker_run "$1"
         ;;
     esac
-    docker_run "$2"
 }
 
 create_docker_folder "$1" "$2"
