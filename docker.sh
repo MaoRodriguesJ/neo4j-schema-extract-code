@@ -25,6 +25,11 @@ function create_c {
     cp -r cineasts/* data/databases/graph.db
 }
 
+function create_s {
+    create_folder
+    cp -r small_test/* data/databases/graph.db
+}
+
 function create_docker_folder {
     case "$1" in
     "-c")
@@ -35,6 +40,11 @@ function create_docker_folder {
     "-d")
         create_d
         echo "Creating drwho dataset!"
+        docker_run "$2"
+        ;;
+    "-s")
+        create_s
+        echo "Creating small_test dataset!"
         docker_run "$2"
         ;;
     *)

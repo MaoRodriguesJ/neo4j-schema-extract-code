@@ -5,7 +5,7 @@ class ReturnTests():
     def __init__(self, uri, user, password):
         self._driver = GraphDatabase.driver(uri, auth=(user, password))
 
-    def closer(self):
+    def close(self):
         self._driver.close()
 
     def get_relationship_types(self):
@@ -40,6 +40,12 @@ class ReturnTests():
             for p in properties:
                 print(p['propertyKey'])
 
+    def get_nodes_passing_label(self, label):
+        with self._driver.session() as session:
+            nodes = session.read_transaction(self._get_nodes_passing_label, {'label': label})
+            for n in nodes:
+                print(n)
+
     @staticmethod
     def _get_types(tx):
         return tx.run("call db.relationshipTypes")
@@ -56,6 +62,10 @@ class ReturnTests():
     def _get_properties_keys(tx):
         return tx.run("call db.propertyKeys")
 
+    @staticmethod
+    def _get_nodes_passing_label(tx, dict):
+        return tx.run("match (a) where $label in labels(a) and length(labels(a))=1 return a", dict)
+
 
 driver = ReturnTests("bolt://0.0.0.0:7687", "neo4j", "neo4jadmin")
-driver.get_schema()
+driver.get_nodes_passing_label('User')
