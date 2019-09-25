@@ -13,9 +13,10 @@ class Query():
         return tx.run("call db.schema")
 
     @staticmethod
-    def _get_properties_keys(tx):
-        return tx.run("call db.propertyKeys")
-
-    @staticmethod
-    def _get_nodes_passing_label(tx, dict):
-        return tx.run("match (a) where $label in labels(a) and length(labels(a))=1 return a", dict)
+    def _get_nodes_passing_label(tx, params):
+        query = "match (a) where "
+        for key, _ in params:
+            query = query + "$" + key + " in labels(a) and "
+            
+        params['size'] = len(params)
+        return tx.run("match (a) where $label in labels(a) and length(labels(a))=1 return a", params)

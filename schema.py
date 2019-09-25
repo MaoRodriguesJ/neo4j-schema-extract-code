@@ -1,20 +1,25 @@
 from driver import Driver
 from query import Query
+from itertools import chain, combinations
 
 class SchemaExtractor():
 
     def __init__(self, driver):
         self._driver = driver
 
+    def powerset(self, iterable):
+        "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+        s = list(iterable)
+        return list(chain.from_iterable(combinations(s, r) for r in range(len(s)+1)))
+
     def get_relationship_types(self):
-        types = self._driver.read_transaction(Query._get_types)
-        for t in types:
-            print(t['relationshipType'])
+        return [t['relationshipType'] for t in self._driver.read_transaction(Query._get_types)]
 
     def get_labels(self):
-        labels = self._driver.read_transaction(Query._get_labels)
-        for l in labels:
-            print(l['label'])
+        return [l['label'] for l in self._driver.read_transaction(Query._get_labels)]
+
+    def get_labels_combination(self, labels):
+        return self.powerset(labels)
 
     def get_schema(self):
         schema = self._driver.read_transaction(Query._get_schema)
@@ -28,18 +33,16 @@ class SchemaExtractor():
                 print(r.type)
                 print(r.nodes)
                 print(r.items())
-    
-    def get_property_keys(self):
-        properties = self._driver.read_transaction(Query._get_properties_keys)
-        for p in properties:
-            print(p['propertyKey'])
 
-    def get_nodes_passing_label(self, label):
-        nodes = self._driver.read_transaction(Query._get_nodes_passing_label, {'label': label})
+    def get_nodes_passing_labels(self, labels):
+        params = {}
+        for index, value in enumerate(labels):
+            params['label' + str(i)] = j
+        nodes = self._driver.read_transaction(Query._get_nodes_passing_label, params)
         for n in nodes:
             print(n)
 
 if __name__ == '__main__':
     driver = Driver("bolt://0.0.0.0:7687", "neo4j", "neo4jadmin")
     schema = SchemaExtractor(driver)
-    schema.get_nodes_passing_label('User')
+    schema.get_nodes_passing_labels(['User', 'Movie'])
