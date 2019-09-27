@@ -13,10 +13,15 @@ class Query():
         return tx.run("call db.schema")
 
     @staticmethod
-    def _get_nodes_passing_label(tx, params):
-        query = "match (a) where "
-        for key, _ in params:
-            query = query + "$" + key + " in labels(a) and "
+    def _get_nodes_by_label(tx, params):
+        query = "match (node) where "
+        for key in params:
+            query = query + "$" + key + " in labels(node) and "
             
-        params['size'] = len(params)
-        return tx.run("match (a) where $label in labels(a) and length(labels(a))=1 return a", params)
+        query = query + "length(labels(node))=" + str(len(params)) + " return node"
+        return tx.run(query, params)
+
+    @staticmethod
+    def _get_relations_types_by_id(tx, params):
+        return tx.run("match (node)-[relation]->(end_node) where id(node)=$id "+
+                      "return type(relation) as relation, labels(end_node) as labels", params)
