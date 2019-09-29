@@ -1,6 +1,7 @@
 from driver import Driver
 from query import Query
 from itertools import chain, combinations
+import sys
 
 class SchemaExtractor():
 
@@ -136,11 +137,42 @@ class SchemaExtractor():
  
         return {**grouping_nodes, **grouping_relationships}
 
+    def test(self):
+        grouping_nodes = self.grouping_nodes()
+        labels_combinations = {k[0] for k in grouping_nodes.keys()}
+        print('Labels combinations: ' + str(labels_combinations))
+        labels = self.get_labels()
+        intersections = dict()
+        visited_labels = set()
+        for label in labels_combinations:
+            if len(label) == 1:
+                print('Label with length 1: ' + str(label))
+                intersections[label[0]] = grouping_nodes[(label, 'node')]
+                visited_labels.add(label[0])
+
+        for i in intersections:
+            print('Intersections length 1: ' + str(i))
+
+        # Continuação do algoritmo: 
+        # 1. pegar todos os grouping que possuem alguma label unica já feita e fazer a diferença e retirar essa label e as properties
+        # 2. passar pelo grouping e pegar os conjuntos de labels em duplas e fazer a intersecção para encontrar as properties de uma só
+        # 3. realizar passo 1 e 2 até extrair todas as labels, caso não existam duplas precisamos pensar em uma estratégia para fundir duplas em algo único
+
+        return intersections
+
 
 if __name__ == '__main__':
-    driver = Driver("bolt://0.0.0.0:7687", "neo4j", "neo4jadmin")
-    schema = SchemaExtractor(driver)
-    grouping = schema.grouping()
+    url = "bolt://0.0.0.0:7687"
+    login = "neo4j"
+    password = "neo4jadmin"
+    if len(sys.argv) == 4:
+        url = sys.argv[1]
+        login = sys.argv[2]
+        password = sys.argv[3]
 
-    for k in grouping:
-        print(k, grouping[k])
+    driver = Driver(url, login, password)
+    schema = SchemaExtractor(driver)
+    grouping = schema.test()
+
+    # for k in grouping:
+    #     print(k, grouping[k])
