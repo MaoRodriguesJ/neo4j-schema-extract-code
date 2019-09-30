@@ -108,7 +108,9 @@ class SchemaExtractor():
             grouping[key] = dict()
             for record in records:
                 self.process_props_grouping(grouping, key, record, 'node')
-                self.process_relationships_grouping(grouping, key, record['node'].id)
+
+                # TODO I will try the intersection OR difference of relationships later
+                #self.process_relationships_grouping(grouping, key, record['node'].id)
 
         self.post_process(grouping)
         return self.process_keys(grouping, 'node')
@@ -133,30 +135,64 @@ class SchemaExtractor():
 
     def grouping(self):
         grouping_nodes = self.grouping_nodes()
-        grouping_relationships = self.grouping_relationships()
+
+        # TODO As the relationships have unique type/label nothing more is needed after this
+        grouping_relationships = dict() #self.grouping_relationships()
  
         return {**grouping_nodes, **grouping_relationships}
 
-    def test(self):
-        grouping_nodes = self.grouping_nodes()
-        labels_combinations = {k[0] for k in grouping_nodes.keys()}
-        print('Labels combinations: ' + str(labels_combinations))
-        labels = self.get_labels()
-        intersections = dict()
-        visited_labels = set()
-        for label in labels_combinations:
-            if len(label) == 1:
-                print('Label with length 1: ' + str(label))
-                intersections[label[0]] = grouping_nodes[(label, 'node')]
-                visited_labels.add(label[0])
 
+    def test_intersection(self, grouping, label, props):
+        # TODO intersect or difference props and relationships (part 3 of the explanation below)
+        return None
+
+
+    def test(self):
+        # TODO The seconod part of the algorithm divided in 2 parts
+        # 1. find unique labels, use them to remove their properties of the ones 
+        #    that have multiple labels with this unique one in them
+        # 2. when all the uniques are done, this means the ones that turned uniques too
+        #    there is only the multiple ones left, so we decide wether we are intersecting
+        #    or differencing them, we search for length 1 intersection or difference, after done
+        #    it will create a new unique label and we iterate over 1 again
+        # 3. inside those two parts we need to intersect or difference the properties and relationships sets
+        #    and need to fix the grouping nodes with it
+
+        grouping_nodes = self.grouping_nodes()
+        intersections = dict()
+
+        label_with_len_1 = True
+        while label_with_len_1:
+            labels_combinations = {k[0] for k in grouping_nodes.keys()}
+            print('Labels combinations: ' + str(labels_combinations))
+       
+            label_with_len_1 = False
+            labels_len_1 = set()
+            for label in labels_combinations:
+                if len(label) == 1:
+                    print('Label with length 1: ' + str(label))
+                    intersections[label] = grouping_nodes.pop((label, 'node'))
+                    label_with_len_1 = True
+                    labels_len_1.add(label)
+
+            if label_with_len_1:
+                for l in labels_len_1:
+                    self.test_intersection(grouping_nodes, l, intersections[l])
+
+            else:
+                for l1 in labels_combinations:
+                    for l2 in labels_combinations:
+                        l3 = l1.intersection(l2)
+                        # TODO order matters in difference
+                        l4 = l1.difference(l2)
+                        if len(l3) == 1:
+                            print('Intersection: ' + str(l1) + ' |intersect| ' + str(l2) + ' = ' + str(l3))
+
+                        if len(l4) == 1:
+                             print('Difference: ' + str(l1) + ' |diff| ' + str(l2) + ' = ' + str(l4))
+                
         for i in intersections:
             print('Intersections length 1: ' + str(i))
-
-        # Continuação do algoritmo: 
-        # 1. pegar todos os grouping que possuem alguma label unica já feita e fazer a diferença e retirar essa label e as properties
-        # 2. passar pelo grouping e pegar os conjuntos de labels em duplas e fazer a intersecção para encontrar as properties de uma só
-        # 3. realizar passo 1 e 2 até extrair todas as labels, caso não existam duplas precisamos pensar em uma estratégia para fundir duplas em algo único
 
         return intersections
 
