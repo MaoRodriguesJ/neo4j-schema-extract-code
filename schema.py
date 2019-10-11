@@ -47,6 +47,7 @@ class SchemaExtractor():
 
 
     def post_process(self, grouping):
+        # Checks if a certain property is mandatory
         for key in grouping:
             size = key[1]
             for prop in grouping[key]:
@@ -57,6 +58,7 @@ class SchemaExtractor():
 
     
     def process_keys(self, grouping, new_key_name):
+        # Removes the size from the key name
         processed_grouping = dict()
         for key in grouping:
             processed_grouping[(key[0], new_key_name)] = grouping[key]
@@ -65,6 +67,8 @@ class SchemaExtractor():
 
 
     def process_props_grouping(self, grouping, key, record, record_name):
+        # Adds how many times a prop was found in the nodes or relationships with the same labels
+        # Used in the post_process method to check if it is mandatory
         for prop in record[record_name].keys():
             typed = type(record[record_name].get(prop))
             prop_key = (prop, typed)
@@ -75,6 +79,8 @@ class SchemaExtractor():
 
 
     def process_relationships_grouping(self, grouping, key, node_id):
+        # Gathers all relationships that flow out nodes with certain label
+        # Checks if that realtionship is present in every node from that label or not
         relationships = self.get_relationships_types_by_id(node_id)
         if 'relationships' not in grouping[key].keys():
             grouping[key]['relationships'] = dict()
@@ -142,9 +148,29 @@ class SchemaExtractor():
         return {**grouping_nodes, **grouping_relationships}
 
 
-    def test_intersection(self, grouping, label, props):
-        # TODO intersect or difference props and relationships (part 3 of the explanation below)
-        return None
+    def process_intersection(self, grouping, label, props):
+        new_grouping = dict()
+        for key in grouping:
+            if key[0].intersection(label):
+                new_key = (key[0].difference(label), 'node')
+                # TODO difference relationships
+                new_props = {k : grouping[key][k] for k in set(grouping[key]).difference(set(props))}
+                new_grouping[new_key] = new_props
+            else:
+                new_grouping[key] = grouping[key]
+
+        return new_grouping
+
+
+    def intersect_props(self, grouping, intersections):
+        # TODO intersect relationships
+        aux_key = (next(iter(intersections)), 'node')
+        new_props = grouping[aux_key]
+        for label in intersections:
+            new_props = {k : grouping[aux_key][k] for k in set(new_props).intersection(set(grouping[(label, 'node')]))}
+
+        print(new_props)
+        return new_props
 
 
     def test(self):
@@ -159,42 +185,54 @@ class SchemaExtractor():
         #    and need to fix the grouping nodes with it
 
         grouping_nodes = self.grouping_nodes()
-        intersections = dict()
+        unique_labels_processed = dict()
+        iteration = 0
 
-        label_with_len_1 = True
-        while label_with_len_1:
+        labels_to_process = True
+        while labels_to_process:
+            print('\n -------- ITERATION ' + str(iteration) + ' -------- \n')
+            iteration += 1
+            labels_to_process = False
+                
             labels_combinations = {k[0] for k in grouping_nodes.keys()}
-            print('Labels combinations: ' + str(labels_combinations))
+            print(labels_combinations)
        
-            label_with_len_1 = False
             labels_len_1 = set()
             for label in labels_combinations:
                 if len(label) == 1:
-                    print('Label with length 1: ' + str(label))
-                    intersections[label] = grouping_nodes.pop((label, 'node'))
-                    label_with_len_1 = True
+                    unique_labels_processed[label] = grouping_nodes.pop((label, 'node'))
+                    labels_to_process = True
                     labels_len_1.add(label)
 
-            if label_with_len_1:
+            if labels_to_process:
                 for l in labels_len_1:
-                    self.test_intersection(grouping_nodes, l, intersections[l])
+                    grouping_nodes = self.process_intersection(grouping_nodes, l, unique_labels_processed[l])
 
             else:
+                intersections = dict()
                 for l1 in labels_combinations:
                     for l2 in labels_combinations:
                         l3 = l1.intersection(l2)
-                        # TODO order matters in difference
-                        l4 = l1.difference(l2)
                         if len(l3) == 1:
-                            print('Intersection: ' + str(l1) + ' |intersect| ' + str(l2) + ' = ' + str(l3))
+                            if l3 not in intersections.keys():
+                                intersections[l3] = {l1, l2}
+                            else:
+                                intersections[l3].add(l1)
+                                intersections[l3].add(l2)
 
-                        if len(l4) == 1:
-                             print('Difference: ' + str(l1) + ' |diff| ' + str(l2) + ' = ' + str(l4))
-                
-        for i in intersections:
-            print('Intersections length 1: ' + str(i))
+                if len(intersections) > 0:
+                    labels_to_process = True
+                    key_with_most_intersections = next(iter(intersections))
+                    for k in intersections:
+                        if len(intersections[k]) > len(intersections[key_with_most_intersections]):
+                            key_with_most_intersections = k
 
-        return intersections
+                    print(key_with_most_intersections)
+                    print(intersections[key_with_most_intersections])
+                    unique_labels_processed[key_with_most_intersections] = self.intersect_props(grouping_nodes, intersections[key_with_most_intersections])
+                    grouping_nodes = self.process_intersection(grouping_nodes, key_with_most_intersections, unique_labels_processed[key_with_most_intersections])
+    
+        return unique_labels_processed
 
 
 if __name__ == '__main__':
@@ -210,5 +248,5 @@ if __name__ == '__main__':
     schema = SchemaExtractor(driver)
     grouping = schema.test()
 
-    # for k in grouping:
-    #     print(k, grouping[k])
+    for k in grouping:
+        print(k, grouping[k])
