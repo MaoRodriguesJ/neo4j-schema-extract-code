@@ -1,151 +1,40 @@
+from collator import Collator
+from database import Database
 from driver import Driver
-from query import Query
-from itertools import chain, combinations
 import sys
 
 class SchemaExtractor():
+    # The second part of the algorithm, The SchemaExtractor
+    # 1. To process the multilabel nodes we could have two approaches using sets theory:
+    #       
+    #           1: Use intersection, when the intersection of two multilabel nodes results
+    #              in only one label we could then extract the properties and relationships
+    #              that belong to that particular label
+    #
+    #           2: Use difference, and the same as the intersection with the difference
+    #              between two multilabel nodes results in only one label
+    #   
+    #   But the intersection can be done with more than just two multilabel nodes because 
+    #   its order does not matter and thats not true with difference
+    #
+    # 2. With intersection its simple, find multilabel nodes that intersect forming only one
+    #    label, intersect the properties and the relationships of those multilabel too to form
+    #    a new entry in the dictionary that has only one label (intersect_props_relationships method), 
+    #    than extract this label and its relationships and properties from those multilabel 
+    #    (process_intersection method) and reapeat this process until only one label nodes rest or we dont 
+    #    have any other options to infer how those left multilabel ones could be split
 
     def __init__(self, driver):
-        self._driver = driver
+        self._collator = Collator(Database(driver))
 
 
-    def powerset(self, iterable):
-        "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
-        s = list(iterable)
-        tuples = list(chain.from_iterable(combinations(s, r) for r in range(len(s)+1)))
-        return filter(None, map(frozenset, tuples))
-
-
-    def get_labels(self):
-        return [l['label'] for l in self._driver.read_transaction(Query._get_labels)]
-
-
-    def get_labels_combination(self, labels):
-        return self.powerset(labels)
-
-
-    def get_nodes_by_labels(self, labels):
-        params = {}
-        for index, value in enumerate(labels):
-            params['label' + str(index)] = value
-        
-        return self._driver.read_transaction(Query._get_nodes_by_label, params)
-
-    
-    def get_relationships_types_by_id(self, node_id):
-        params = {'id' : node_id}
-        return self._driver.read_transaction(Query._get_relationships_types_by_id, params)
-
-
-    def get_relationship_types(self):
-        return [t['relationshipType'] for t in self._driver.read_transaction(Query._get_types)]
-
-    
-    def get_relationships_by_type(self, typed):
-        params = {'type': typed}
-        return self._driver.read_transaction(Query._get_relationships_by_type, params)
-
-
-    def post_process(self, grouping):
-        # Checks if a certain property is mandatory
-        for key in grouping:
-            size = key[1]
-            for prop in grouping[key]:
-                if grouping[key][prop] == size:
-                    grouping[key][prop] = True
-                elif prop != 'relationships':
-                    grouping[key][prop] = False
-
-    
-    def process_keys(self, grouping, new_key_name):
-        # Removes the size from the key name
-        processed_grouping = dict()
-        for key in grouping:
-            processed_grouping[(key[0], new_key_name)] = grouping[key]
-
-        return processed_grouping
-
-
-    def process_props_grouping(self, grouping, key, record, record_name):
-        # Adds how many times a prop was found in the nodes or relationships with the same labels
-        # Used in the post_process method to check if it is mandatory
-        for prop in record[record_name].keys():
-            typed = type(record[record_name].get(prop))
-            prop_key = (prop, typed)
-            if prop_key in grouping[key].keys():
-                grouping[key][prop_key] = grouping[key][prop_key] + 1
-            else:
-                grouping[key][prop_key] = 1
-
-
-    def process_relationships_grouping(self, grouping, key, node_id):
-        # Gathers all relationships that flow out nodes with certain label
-        # Checks if that realtionship is present in every node from that label or not
-        relationships = self.get_relationships_types_by_id(node_id)
-        if 'relationships' not in grouping[key].keys():
-            grouping[key]['relationships'] = dict()
-            for r in relationships:
-                relationship_key = (r['relationship'], r['labels'][0])
-                grouping[key]['relationships'][relationship_key] = True
-        
-        else:
-            relationships_keys = set()
-            old_keys = grouping[key]['relationships'].keys()
-            for r in relationships:
-                relationship_key = (r['relationship'], r['labels'][0])
-                relationships_keys.add(relationship_key)
-                if relationship_key not in old_keys:
-                    grouping[key]['relationships'][relationship_key] = False
-
-            for k in old_keys:
-                if k not in relationships_keys:
-                    grouping[key]['relationships'][k] = False
-
-
-    def grouping_nodes(self):
-        labels_powerset = self.get_labels_combination(self.get_labels())
-        grouping = dict()
-        for label_combination in labels_powerset:
-            records = [r for r in self.get_nodes_by_labels(label_combination)]
-            if len(records) == 0:
-                continue
-
-            key = (label_combination, len(records))
-            grouping[key] = dict()
-            for record in records:
-                self.process_props_grouping(grouping, key, record, 'node')
-
-                # TODO I will try the intersection OR difference of relationships later
-                #self.process_relationships_grouping(grouping, key, record['node'].id)
-
-        self.post_process(grouping)
-        return self.process_keys(grouping, 'node')
-
-
-    def grouping_relationships(self):
-        types = self.get_relationship_types()
-        grouping = dict()
-        for typed in types:
-            records = [r for r in self.get_relationships_by_type(typed)]
-            if len(records) == 0:
-                continue
-
-            key = (typed, len(records))
-            grouping[key] = dict()
-            for record in records:
-                self.process_props_grouping(grouping, key, record, 'relationship')
-
-        self.post_process(grouping)
-        return self.process_keys(grouping, 'relationship')
-
-
-    def grouping(self):
-        grouping_nodes = self.grouping_nodes()
-
-        # TODO As the relationships have unique type/label nothing more is needed after this
-        grouping_relationships = dict() #self.grouping_relationships()
- 
-        return {**grouping_nodes, **grouping_relationships}
+    @staticmethod
+    def print_grouping_nodes(grouping):
+        for k in grouping:
+            print('\nKey: ' + str(k))
+            print('Properties: ' +str(grouping[k]['props']))
+            if len(k) == 1:
+                print('Relationships: ' + str(grouping[k]['relationships']))
 
 
     def process_intersection(self, grouping, label, props):
@@ -153,49 +42,44 @@ class SchemaExtractor():
         for key in grouping:
             if key[0].intersection(label):
                 new_key = (key[0].difference(label), 'node')
-                # TODO difference relationships
-                new_props = {k : grouping[key][k] for k in set(grouping[key]).difference(set(props))}
-                new_grouping[new_key] = new_props
+                new_props = {k : grouping[key]['props'][k] for k in set(grouping[key]['props']).difference(set(props['props']))}
+                new_relationships = {k : grouping[key]['relationships'][k] for k in set(grouping[key]['relationships']).difference(set(props['relationships']))}
+                new_grouping[new_key] = {'props' : new_props, 'relationships' : new_relationships}
             else:
                 new_grouping[key] = grouping[key]
 
         return new_grouping
 
 
-    def intersect_props(self, grouping, intersections):
-        # TODO intersect relationships
+    def intersect_props_relationships(self, grouping, intersections):
         aux_key = (next(iter(intersections)), 'node')
-        new_props = grouping[aux_key]
+        new_props = grouping[aux_key]['props']
+        new_relationships = grouping[aux_key]['relationships']
         for label in intersections:
-            new_props = {k : grouping[aux_key][k] for k in set(new_props).intersection(set(grouping[(label, 'node')]))}
+            new_props = {k : grouping[aux_key]['props'][k] for k in set(new_props).intersection(set(grouping[(label, 'node')]['props']))}
+            new_relationships = {k : grouping[aux_key]['relationships'][k] for k in set(new_relationships).intersection(set(grouping[(label, 'node')]['relationships']))}
 
-        print(new_props)
-        return new_props
+        return {'props' : new_props, 'relationships' : new_relationships}
 
 
-    def test(self):
-        # TODO The seconod part of the algorithm divided in 2 parts
-        # 1. find unique labels, use them to remove their properties of the ones 
-        #    that have multiple labels with this unique one in them
-        # 2. when all the uniques are done, this means the ones that turned uniques too
-        #    there is only the multiple ones left, so we decide wether we are intersecting
-        #    or differencing them, we search for length 1 intersection or difference, after done
-        #    it will create a new unique label and we iterate over 1 again
-        # 3. inside those two parts we need to intersect or difference the properties and relationships sets
-        #    and need to fix the grouping nodes with it
+    def extract(self):
+        grouping_nodes = self._collator.grouping_nodes()
+        print('\n -------- Groupings -------- \n')
+        SchemaExtractor.print_grouping_nodes(grouping_nodes)
 
-        grouping_nodes = self.grouping_nodes()
         unique_labels_processed = dict()
         iteration = 0
 
         labels_to_process = True
         while labels_to_process:
-            print('\n -------- ITERATION ' + str(iteration) + ' -------- \n')
+            print('\n -------- ITERATION ' + str(iteration) + ' --------')
             iteration += 1
             labels_to_process = False
+            grouping_nodes.pop((frozenset(), 'node'), None)
                 
             labels_combinations = {k[0] for k in grouping_nodes.keys()}
-            print(labels_combinations)
+            print('\nLabels combinations:' + str(labels_combinations))
+            SchemaExtractor.print_grouping_nodes(unique_labels_processed)
        
             labels_len_1 = set()
             for label in labels_combinations:
@@ -227,12 +111,24 @@ class SchemaExtractor():
                         if len(intersections[k]) > len(intersections[key_with_most_intersections]):
                             key_with_most_intersections = k
 
-                    print(key_with_most_intersections)
-                    print(intersections[key_with_most_intersections])
-                    unique_labels_processed[key_with_most_intersections] = self.intersect_props(grouping_nodes, intersections[key_with_most_intersections])
-                    grouping_nodes = self.process_intersection(grouping_nodes, key_with_most_intersections, unique_labels_processed[key_with_most_intersections])
+                    print('\nKey with most intersections: ' + str(key_with_most_intersections))
+                    print('Intersections: ' + str(intersections[key_with_most_intersections]))
+                    unique_labels_processed[key_with_most_intersections] = self.intersect_props_relationships(
+                                                                            grouping_nodes, 
+                                                                            intersections[key_with_most_intersections])
+
+                    grouping_nodes = self.process_intersection(grouping_nodes, 
+                                                               key_with_most_intersections, 
+                                                               unique_labels_processed[key_with_most_intersections])
+
+        if len(grouping_nodes) > 0:
+            print('!!!!! ----- Intersection was not enough! ----- !!!!!')
+            # TODO Can be done the difference too after the 'if len(intersections) > 0:' in a else statement
+            for k in grouping_nodes:
+                print('WTF: ' + str(k))
+                unique_labels_processed[k] = grouping_nodes[k]
     
-        return unique_labels_processed
+        return {**unique_labels_processed, **self._collator.grouping_relationships()}
 
 
 if __name__ == '__main__':
@@ -246,7 +142,5 @@ if __name__ == '__main__':
 
     driver = Driver(url, login, password)
     schema = SchemaExtractor(driver)
-    grouping = schema.test()
-
-    for k in grouping:
-        print(k, grouping[k])
+    grouping = schema.extract()
+    SchemaExtractor.print_grouping_nodes(grouping)

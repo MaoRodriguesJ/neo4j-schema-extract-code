@@ -1,6 +1,8 @@
 from neo4j.v1 import GraphDatabase
 
 class Driver():
+    # Driver abstraction used to access the Neo4j database
+    # With read and write transactions that can be parametized
 
     def __init__(self, uri, user, password):
         self._driver = GraphDatabase.driver(uri, auth=(user, password))
