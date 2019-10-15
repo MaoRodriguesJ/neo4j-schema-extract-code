@@ -10,6 +10,10 @@ function docker_run {
     neo4j
 }
 
+# If apoc its needed to create the desired database
+# include this to the docker run cmd:
+# --env 'NEO4JLABS_PLUGINS=["apoc"]' \
+
 function create_folder {
     rm -r data
     mkdir -p data/databases/graph.db
