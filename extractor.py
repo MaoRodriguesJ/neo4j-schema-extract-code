@@ -70,7 +70,8 @@ class Extractor():
                     print('\nKey with most intersections: ' + str(key_with_most_intersections))
                     unique_labels_processed[key_with_most_intersections] = self._intersect_props_relationships(
                                                                             grouping_nodes, 
-                                                                            intersections[key_with_most_intersections])
+                                                                            intersections[key_with_most_intersections],
+                                                                            key_with_most_intersections)
 
                     grouping_nodes = self._process_intersection(grouping_nodes, 
                                                                 key_with_most_intersections, 
@@ -82,10 +83,8 @@ class Extractor():
                 #     if len(find_diff) > 0:
                 #         labels_to_process = True
                 #         key = next(iter(find_diff))
-
                 #         print('\nKey with difference of length one: ' + str(key))
                 #         unique_labels_processed[key] = self._diff_props_relationships(grouping_nodes, find_diff[key])
-
                 #         grouping_nodes = self._process_intersection(grouping_nodes, key, unique_labels_processed[key])
 
         if len(grouping_nodes) > 0:
@@ -107,6 +106,8 @@ class Extractor():
                 new_relationships = {k : grouping[key]['relationships'][k] 
                                      for k in set(grouping[key]['relationships']).difference(set(props['relationships']))}
 
+                self._process_new_relationships(new_relationships, label)
+
                 new_grouping[new_key] = {'props' : new_props, 'relationships' : new_relationships}
             else:
                 new_grouping[key] = grouping[key]
@@ -114,7 +115,7 @@ class Extractor():
         return new_grouping
 
 
-    def _intersect_props_relationships(self, grouping, intersections):
+    def _intersect_props_relationships(self, grouping, intersections, key):
         aux_key = (next(iter(intersections)), 'node')
         new_props = grouping[aux_key]['props']
         new_relationships = grouping[aux_key]['relationships']
@@ -125,6 +126,8 @@ class Extractor():
             new_relationships = {k : grouping[aux_key]['relationships'][k] 
                                  for k in set(new_relationships).intersection(set(grouping[(label, 'node')]['relationships']))}
 
+        self._process_new_relationships(new_relationships, key)
+
         return {'props' : new_props, 'relationships' : new_relationships}
 
 
@@ -133,11 +136,22 @@ class Extractor():
     #     diff_l2 = (diff[1], 'node')
     #     new_props = {k : grouping[diff_l1]['props'][k] 
     #                  for k in set(grouping[diff_l1]['props']).difference(set(grouping[diff_l2]['props']))}
-
     #     new_relationships = {k : grouping[diff_l1]['relationships'][k] 
     #                          for k in set(grouping[diff_l1]['relationships']).difference(set(grouping[diff_l2]['relationships']))}
-
     #     return {'props' : new_props, 'relationships' : new_relationships}
+
+
+    def _process_new_relationships(self, new_relationships, key):
+        old_relationships = list()
+        for relationship in new_relationships:
+            if len(relationship[1]) > 1 and next(iter(key)) in relationship[1]:
+                old_relationships.append({relationship : new_relationships[relationship]})
+
+        for relationship in old_relationships:
+            for r in relationship:
+                new_relationships.pop(r)
+                new_relationships[(r[0], key)] = relationship[r]
+                new_relationships[(r[0], r[1].difference(key))] = relationship[r]
 
 
     def _get_labels_intersections(self, labels_combinations):
@@ -172,7 +186,6 @@ class Extractor():
     #             if len(l3) == 1:
     #                 diff[l3] = [l1, l2]
     #                 return diff
-
     #     return diff
 
 

@@ -98,14 +98,14 @@ class Collator():
         if 'relationships' not in grouping[key].keys():
             grouping[key]['relationships'] = dict()
             for r in relationships:
-                relationship_key = (r['relationship'], r['labels'][0])
+                relationship_key = (r['relationship'], frozenset(r['labels']))
                 grouping[key]['relationships'][relationship_key] = True
         
         else:
             relationships_keys = set()
             old_keys = grouping[key]['relationships'].keys()
             for r in relationships:
-                relationship_key = (r['relationship'], r['labels'][0])
+                relationship_key = (r['relationship'], frozenset(r['labels']))
                 relationships_keys.add(relationship_key)
                 if relationship_key not in old_keys:
                     grouping[key]['relationships'][relationship_key] = False

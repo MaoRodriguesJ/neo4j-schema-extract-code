@@ -3,9 +3,12 @@ from database import Database
 from driver import Driver
 from extractor import Extractor
 from parser import Parser
-import sys
+from pathlib import Path
+import sys, os, json
 
 class Schema():
+    # Schema get the input from the Collator and the Extractor to feed the Parser
+    # and generate a list of ready json files to be saved
 
     def __init__(self, database):
         self._collator = Collator(database)
@@ -20,10 +23,26 @@ class Schema():
 
         extracted_grouping_nodes = self._extractor.extract(grouping_nodes)
 
-        parsed_list = self._parser.parse({**extracted_grouping_nodes, **grouping_relationships})
+        print('\n ---- Done Extracting ----')
+        Extractor.print_grouping_nodes({**extracted_grouping_nodes, ** grouping_relationships})
 
-        print('\n ---- Done ----')
-        Extractor.print_grouping_nodes(parsed_list)
+        parsed_list = self._parser.parse(extracted_grouping_nodes, grouping_relationships)
+
+        print('\n ---- Done Parsing ----\n')
+        for i in parsed_list:
+            print(i)
+
+        self._save(path, parsed_list)
+
+
+    def _save(self, path, parsed_list):
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        data_folder = Path(path)
+        for item in parsed_list:
+            with open(data_folder / item['$id'], 'w') as parsed_file:
+                json.dump(item, parsed_file, indent=4)
 
 
 if __name__ == '__main__':
@@ -37,9 +56,6 @@ if __name__ == '__main__':
         login = sys.argv[2]
         password = sys.argv[3]
         path = sys.argv[4]
-    
-    if len(sys.argv) == 2:
-        path = sys.argv[2]
 
     schema = Schema(Database(Driver(url, login, password)))
     schema.generate(path)

@@ -106,6 +106,8 @@ venv.bak/
 #VSCode
 .vscode
 
-#Neo4j Docker
+#Project Ignores
 data/
 logs/
+generated_schema/
+*.txt
