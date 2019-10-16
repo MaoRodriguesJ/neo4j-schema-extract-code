@@ -1,5 +1,3 @@
-# neo4j-python-learn
-Learning Neo4j in python for later use in TCC
+# neo4j-schema-extract-code
 
-docker.sh just creates a container choosing local volumes to store data
-and logs, pass a name as argument
+Extracting a JSON-Schema to represent a Neo4j Database
