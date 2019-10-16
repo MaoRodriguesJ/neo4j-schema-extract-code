@@ -32,8 +32,6 @@ class Collator():
     #    (step 2) method still needs some adjustments because of the multi label that 
     #    is allowed for nodes, this is done in the SchemaExtractor
 
-    # TODO REMOVE THE PRINTINGS WHEN ITS DONE
-
     def __init__(self, database):
         self._database = database
 
@@ -48,8 +46,6 @@ class Collator():
 
             key = (label_combination, len(records))
             grouping[key] = dict()
-            print('\nLabel combination: ' + str(label_combination))
-            print('Size: ' + str(len(records)))
             for record in records:
                 self._process_props_grouping(grouping, key, record, 'node')
                 self._process_relationships_grouping(grouping, key, record['node'].id)
@@ -68,8 +64,6 @@ class Collator():
 
             key = (typed, len(records))
             grouping[key] = dict()
-            print('\nRelationship type: ' + str(typed))
-            print('Size: ' + str(len(records)))
             for record in records:
                 self._process_props_grouping(grouping, key, record, 'relationship')
 

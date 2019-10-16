@@ -16,21 +16,20 @@ class Schema():
         self._parser = Parser()
 
     def generate(self, path):
-        print(' ---- Path to generate file: ' + str(path) + ' ---- ')
-
         grouping_nodes = self._collator.grouping_nodes()
+        print('\n ---- Done Grouping Nodes ----')
+        Schema.print_grouping(grouping_nodes)
+
         grouping_relationships = self._collator.grouping_relationships()
+        print('\n ---- Done Grouping Relationships ----')
+        Schema.print_grouping(grouping_relationships)
 
         extracted_grouping_nodes = self._extractor.extract(grouping_nodes)
 
         print('\n ---- Done Extracting ----')
-        Extractor.print_grouping_nodes({**extracted_grouping_nodes, ** grouping_relationships})
+        Schema.print_grouping({**extracted_grouping_nodes, ** grouping_relationships})
 
         parsed_list = self._parser.parse(extracted_grouping_nodes, grouping_relationships)
-
-        print('\n ---- Done Parsing ----\n')
-        for i in parsed_list:
-            print(i)
 
         self._save(path, parsed_list)
 
@@ -43,6 +42,15 @@ class Schema():
         for item in parsed_list:
             with open(data_folder / item['$id'], 'w') as parsed_file:
                 json.dump(item, parsed_file, indent=4)
+
+    
+    @staticmethod
+    def print_grouping(grouping):
+        for k in grouping:
+            print('\nKey: ' + str(k))
+            print('Properties: ' +str(grouping[k]['props']))
+            if 'relationships' in grouping[k].keys():
+                print('Relationships: ' + str(grouping[k]['relationships']))
 
 
 if __name__ == '__main__':

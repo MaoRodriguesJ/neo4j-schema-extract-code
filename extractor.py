@@ -24,31 +24,21 @@ class Extractor():
     #    (process_intersection method) and reapeat this process until only one label nodes rest or we dont 
     #    have any other options to infer how those left multilabel ones could be split
 
-    # TODO REMOVE THE PRINTINGS WHEN ITS DONE
-
     def __init__(self):
         pass
 
 
     def extract(self, grouping):
         grouping_nodes = grouping
-        print('\n -------- Groupings -------- \n')
-        Extractor.print_grouping_nodes(grouping_nodes)
 
         unique_labels_processed = dict()
-        iteration = 0
         labels_to_process = True
 
         while labels_to_process:
-            print('\n -------- ITERATION ' + str(iteration) + ' --------')
-            Extractor.print_grouping_nodes(unique_labels_processed)
-            iteration += 1
-
             labels_to_process = False
             grouping_nodes.pop((frozenset(), 'node'), None)
                 
             labels_combinations = {k[0] for k in grouping_nodes.keys()}
-            print('\nLabels combinations:' + str(labels_combinations))
 
             labels_len_1 = set()
             for label in labels_combinations:
@@ -67,7 +57,6 @@ class Extractor():
                     labels_to_process = True
                     key_with_most_intersections = self._get_key_with_most_intersections(intersections)
 
-                    print('\nKey with most intersections: ' + str(key_with_most_intersections))
                     unique_labels_processed[key_with_most_intersections] = self._intersect_props_relationships(
                                                                             grouping_nodes, 
                                                                             intersections[key_with_most_intersections],
@@ -77,18 +66,7 @@ class Extractor():
                                                                 key_with_most_intersections, 
                                                                 unique_labels_processed[key_with_most_intersections])
 
-                # For the reason explained in the begining we are not using difference
-                # else:
-                #     find_diff = self._find_diff(labels_combinations)
-                #     if len(find_diff) > 0:
-                #         labels_to_process = True
-                #         key = next(iter(find_diff))
-                #         print('\nKey with difference of length one: ' + str(key))
-                #         unique_labels_processed[key] = self._diff_props_relationships(grouping_nodes, find_diff[key])
-                #         grouping_nodes = self._process_intersection(grouping_nodes, key, unique_labels_processed[key])
-
         if len(grouping_nodes) > 0:
-            print('!!!!! ----- Intersection was not enough to infer labels with length of one ----- !!!!!')
             for k in grouping_nodes:
                 unique_labels_processed[k] = grouping_nodes[k]
 
@@ -96,6 +74,7 @@ class Extractor():
 
 
     def _process_intersection(self, grouping, label, props):
+        # Retrocheck if with the current new unique labels (props) its possible to separate any multilabel node
         new_grouping = dict()
         for key in grouping:
             if key[0].intersection(label):
@@ -116,6 +95,7 @@ class Extractor():
 
 
     def _intersect_props_relationships(self, grouping, intersections, key):
+        # Intersects props and relationships from all intersections found in the labels
         aux_key = (next(iter(intersections)), 'node')
         new_props = grouping[aux_key]['props']
         new_relationships = grouping[aux_key]['relationships']
@@ -131,17 +111,8 @@ class Extractor():
         return {'props' : new_props, 'relationships' : new_relationships}
 
 
-    # def _diff_props_relationships(self, grouping, diff):
-    #     diff_l1 = (diff[0], 'node')
-    #     diff_l2 = (diff[1], 'node')
-    #     new_props = {k : grouping[diff_l1]['props'][k] 
-    #                  for k in set(grouping[diff_l1]['props']).difference(set(grouping[diff_l2]['props']))}
-    #     new_relationships = {k : grouping[diff_l1]['relationships'][k] 
-    #                          for k in set(grouping[diff_l1]['relationships']).difference(set(grouping[diff_l2]['relationships']))}
-    #     return {'props' : new_props, 'relationships' : new_relationships}
-
-
     def _process_new_relationships(self, new_relationships, key):
+        # Since we found an intersection we need to remove from the relationships that had a multilabel node
         old_relationships = list()
         for relationship in new_relationships:
             if len(relationship[1]) > 1 and next(iter(key)) in relationship[1]:
@@ -176,23 +147,3 @@ class Extractor():
                 key_with_most_intersections = k
         
         return key_with_most_intersections
-
-    
-    # def _find_diff(self, labels_combinations):
-    #     diff = dict()
-    #     for l1 in labels_combinations:
-    #         for l2 in labels_combinations:
-    #             l3 = l1.difference(l2)
-    #             if len(l3) == 1:
-    #                 diff[l3] = [l1, l2]
-    #                 return diff
-    #     return diff
-
-
-    @staticmethod
-    def print_grouping_nodes(grouping):
-        for k in grouping:
-            print('\nKey: ' + str(k))
-            print('Properties: ' +str(grouping[k]['props']))
-            if 'relationships' in grouping[k].keys():
-                print('Relationships: ' + str(grouping[k]['relationships']))
