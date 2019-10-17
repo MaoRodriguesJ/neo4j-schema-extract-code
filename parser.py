@@ -20,11 +20,14 @@ class Parser():
     def _parse_node(self, key, node):
         parsed_node = dict()
         parsed_node["$schema"] = "https://json-schema.org/draft/2019-09/schema#"
+        parsed_node["title"] = self._build_node_id(key).capitalize()
+        parsed_node["description"] = self._build_node_id(key).capitalize() + " node"
         parsed_node["$id"] = self._build_node_id(key) + '.json'
         parsed_node["definitions"] = dict()
         parsed_node["type"] = "object"
         parsed_node["properties"] = dict()
         parsed_node["required"] = list()
+        parsed_node["required"].append("id")
         parsed_node["additionalProperties"] = False
 
         for key in node['props']:
@@ -70,18 +73,24 @@ class Parser():
 
                 if not relationship_required and node['relationships'][key]:
                     relationship_required = True
+                    parsed_node["properties"]["relationships"]["minItems"] = 1
                     parsed_node["required"].append("relationships")
 
+        parsed_node["properties"]["id"] = {"type" : "number"}
         return parsed_node
 
 
     def _parse_relationship(self, key, props):
         parsed_relationship = dict()
         parsed_relationship["$schema"] = "https://json-schema.org/draft/2019-09/schema#"
+        parsed_relationship["title"] = str(key[0])
+        parsed_relationship["description"] = str(key[0]) + " relationship"
         parsed_relationship["$id"] = str(key[0]).lower() + '.json'
         parsed_relationship["type"] = "object"
         parsed_relationship["properties"] = dict()
+        parsed_relationship["properties"]["id"] = {"type" : "number"}
         parsed_relationship["required"] = list()
+        parsed_relationship["required"].append("id")
         parsed_relationship["additionalProperties"] = False
 
         for key in props:
