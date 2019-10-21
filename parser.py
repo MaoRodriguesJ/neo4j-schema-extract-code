@@ -27,7 +27,8 @@ class Parser():
         parsed_node["type"] = "object"
         parsed_node["properties"] = dict()
         parsed_node["required"] = list()
-        parsed_node["required"].append("id")
+        parsed_node["required"].append("<id>")
+        parsed_node["properties"]["id"] = {"type" : "number"}
         parsed_node["additionalProperties"] = False
 
         for key in node['props']:
@@ -76,7 +77,6 @@ class Parser():
                     parsed_node["properties"]["relationships"]["minItems"] = 1
                     parsed_node["required"].append("relationships")
 
-        parsed_node["properties"]["id"] = {"type" : "number"}
         return parsed_node
 
 
@@ -90,7 +90,8 @@ class Parser():
         parsed_relationship["properties"] = dict()
         parsed_relationship["properties"]["id"] = {"type" : "number"}
         parsed_relationship["required"] = list()
-        parsed_relationship["required"].append("id")
+        parsed_node["required"].append("<id>")
+        parsed_node["properties"]["id"] = {"type" : "number"}
         parsed_relationship["additionalProperties"] = False
 
         for key in props:
