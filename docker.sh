@@ -1,4 +1,17 @@
 
+#need neo4j docker v > 3.5.10 i guess
+function docker_run_apoc {
+    docker run \
+        --publish=7474:7474 \
+        --publish=7687:7687 \
+        --volume=$PWD/data:/data \
+        --volume=$PWD/logs:$PWD/logs \
+        --env=NEO4J_dbms_allow__upgrade=true \
+        --env 'NEO4JLABS_PLUGINS=["apoc"]' \
+        --name=$1 \
+    neo4j
+}
+
 function docker_run {
     docker run \
         --publish=7474:7474 \
@@ -9,10 +22,6 @@ function docker_run {
         --name=$1 \
     neo4j
 }
-
-# If apoc its needed to create the desired database
-# include this to the docker run cmd:
-# --env 'NEO4JLABS_PLUGINS=["apoc"]' \
 
 function create_folder {
     rm -r data
@@ -31,7 +40,7 @@ function create_c {
 
 function create_s {
     create_folder
-    cp -r small_test/* data/databases/graph.db
+    cp -r stackoverflow/* data/databases/graph.db
 }
 
 function create_docker_folder {
@@ -49,7 +58,7 @@ function create_docker_folder {
     "-s")
         create_s
         echo "Creating small_test dataset!"
-        docker_run "$2"
+        docker_run_apoc "$2"
         ;;
     *)
         echo "Creating empty dataset!"

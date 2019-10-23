@@ -109,5 +109,4 @@ venv.bak/
 #Project Ignores
 data/
 logs/
-generated_schema/
 *.txt
