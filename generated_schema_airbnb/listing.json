@@ -1,0 +1,109 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Listing",
+    "description": "Listing node",
+    "$id": "listing.json",
+    "definitions": {
+        "in_neighborhood": {
+            "type": "object",
+            "$ref": "in_neighborhood.json"
+        },
+        "neighborhood": {
+            "type": "object",
+            "$ref": "neighborhood.json"
+        },
+        "has": {
+            "type": "object",
+            "$ref": "has.json"
+        },
+        "amenity": {
+            "type": "object",
+            "$ref": "amenity.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "bedrooms": {
+            "type": "number"
+        },
+        "listing_id": {
+            "type": "string"
+        },
+        "price": {
+            "type": "number"
+        },
+        "accommodates": {
+            "type": "number"
+        },
+        "name": {
+            "type": "string"
+        },
+        "property_type": {
+            "type": "string"
+        },
+        "bathrooms": {
+            "type": "number"
+        },
+        "availabiliity_365": {
+            "type": "number"
+        },
+        "cleaning_fee": {
+            "type": "number"
+        },
+        "weekly_price": {
+            "type": "number"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/in_neighborhood"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/neighborhood"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/has"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/amenity"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "<id>",
+        "bedrooms",
+        "listing_id",
+        "price",
+        "accommodates",
+        "name",
+        "property_type",
+        "bathrooms",
+        "availabiliity_365",
+        "cleaning_fee",
+        "weekly_price",
+        "relationships"
+    ],
+    "additionalProperties": false
+}

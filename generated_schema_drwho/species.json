@@ -1,0 +1,126 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Species",
+    "description": "Species node",
+    "$id": "species.json",
+    "definitions": {
+        "enemy_of": {
+            "type": "object",
+            "$ref": "enemy_of.json"
+        },
+        "species": {
+            "type": "object",
+            "$ref": "species.json"
+        },
+        "comes_from": {
+            "type": "object",
+            "$ref": "comes_from.json"
+        },
+        "planet": {
+            "type": "object",
+            "$ref": "planet.json"
+        },
+        "character": {
+            "type": "object",
+            "$ref": "character.json"
+        },
+        "appeared_in": {
+            "type": "object",
+            "$ref": "appeared_in.json"
+        },
+        "episode": {
+            "type": "object",
+            "$ref": "episode.json"
+        },
+        "ally_of": {
+            "type": "object",
+            "$ref": "ally_of.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "species": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/enemy_of"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/species"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/comes_from"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/planet"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/enemy_of"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/character"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/appeared_in"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/episode"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/ally_of"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/character"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "<id>",
+        "species"
+    ],
+    "additionalProperties": false
+}

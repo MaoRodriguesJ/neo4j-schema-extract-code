@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "COMES_FROM",
+    "description": "COMES_FROM relationship",
+    "$id": "comes_from.json",
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "<id>"
+    ],
+    "additionalProperties": false
+}

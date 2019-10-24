@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "APPEARED_IN",
+    "description": "APPEARED_IN relationship",
+    "$id": "appeared_in.json",
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "<id>"
+    ],
+    "additionalProperties": false
+}

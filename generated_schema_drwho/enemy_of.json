@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "ENEMY_OF",
+    "description": "ENEMY_OF relationship",
+    "$id": "enemy_of.json",
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "<id>"
+    ],
+    "additionalProperties": false
+}

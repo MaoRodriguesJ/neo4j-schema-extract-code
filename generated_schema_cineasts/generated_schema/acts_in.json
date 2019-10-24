@@ -1,0 +1,20 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "ACTS_IN",
+    "description": "ACTS_IN relationship",
+    "$id": "acts_in.json",
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "<id>",
+        "name"
+    ],
+    "additionalProperties": false
+}

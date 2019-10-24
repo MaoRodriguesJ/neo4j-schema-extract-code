@@ -1,0 +1,91 @@
+
+Nodes: 129 444
+Relationships: 220 183
+Time: real	2m23,256s
+      user	1m25,447s
+      sys	0m5,910s
+
+
+ ---- Done Grouping Nodes ----
+
+Key: (frozenset({'Listing'}), 'node')
+Properties: {('bedrooms', <class 'int'>): False, ('listing_id', <class 'str'>): True, ('price', <class 'float'>): False, ('accommodates', <class 'int'>): True, ('name', <class 'str'>): True, ('property_type', <class 'str'>): True, ('bathrooms', <class 'int'>): False, ('availabiliity_365', <class 'int'>): True, ('cleaning_fee', <class 'float'>): False, ('weekly_price', <class 'float'>): False}
+Relationships: {('IN_NEIGHBORHOOD', frozenset({'Neighborhood'})): True, ('HAS', frozenset({'Amenity'})): True}
+
+Key: (frozenset({'Amenity'}), 'node')
+Properties: {('name', <class 'str'>): True}
+Relationships: {}
+
+Key: (frozenset({'Neighborhood'}), 'node')
+Properties: {('name', <class 'str'>): False, ('neighborhood_id', <class 'str'>): True}
+Relationships: {}
+
+Key: (frozenset({'Host'}), 'node')
+Properties: {('name', <class 'str'>): False, ('superhost', <class 'bool'>): True, ('image', <class 'str'>): False, ('location', <class 'str'>): False, ('host_id', <class 'str'>): True}
+Relationships: {('HOSTS', frozenset({'Listing'})): True}
+
+Key: (frozenset({'User'}), 'node')
+Properties: {('name', <class 'str'>): True, ('user_id', <class 'str'>): True}
+Relationships: {('WROTE', frozenset({'Review'})): True}
+
+Key: (frozenset({'Review'}), 'node')
+Properties: {('date', <class 'str'>): True, ('review_id', <class 'str'>): True, ('comments', <class 'str'>): True}
+Relationships: {('REVIEWS', frozenset({'Listing'})): True}
+
+ ---- Done Grouping Relationships ----
+
+Key: ('HAS', 'relationship')
+Properties: {}
+
+Key: ('IN_NEIGHBORHOOD', 'relationship')
+Properties: {}
+
+Key: ('HOSTS', 'relationship')
+Properties: {}
+
+Key: ('WROTE', 'relationship')
+Properties: {}
+
+Key: ('REVIEWS', 'relationship')
+Properties: {}
+
+ ---- Done Extracting ----
+
+Key: frozenset({'Review'})
+Properties: {('date', <class 'str'>): True, ('review_id', <class 'str'>): True, ('comments', <class 'str'>): True}
+Relationships: {('REVIEWS', frozenset({'Listing'})): True}
+
+Key: frozenset({'Amenity'})
+Properties: {('name', <class 'str'>): True}
+Relationships: {}
+
+Key: frozenset({'Neighborhood'})
+Properties: {('name', <class 'str'>): False, ('neighborhood_id', <class 'str'>): True}
+Relationships: {}
+
+Key: frozenset({'Listing'})
+Properties: {('bedrooms', <class 'int'>): False, ('listing_id', <class 'str'>): True, ('price', <class 'float'>): False, ('accommodates', <class 'int'>): True, ('name', <class 'str'>): True, ('property_type', <class 'str'>): True, ('bathrooms', <class 'int'>): False, ('availabiliity_365', <class 'int'>): True, ('cleaning_fee', <class 'float'>): False, ('weekly_price', <class 'float'>): False}
+Relationships: {('IN_NEIGHBORHOOD', frozenset({'Neighborhood'})): True, ('HAS', frozenset({'Amenity'})): True}
+
+Key: frozenset({'User'})
+Properties: {('name', <class 'str'>): True, ('user_id', <class 'str'>): True}
+Relationships: {('WROTE', frozenset({'Review'})): True}
+
+Key: frozenset({'Host'})
+Properties: {('name', <class 'str'>): False, ('superhost', <class 'bool'>): True, ('image', <class 'str'>): False, ('location', <class 'str'>): False, ('host_id', <class 'str'>): True}
+Relationships: {('HOSTS', frozenset({'Listing'})): True}
+
+Key: ('HAS', 'relationship')
+Properties: {}
+
+Key: ('IN_NEIGHBORHOOD', 'relationship')
+Properties: {}
+
+Key: ('HOSTS', 'relationship')
+Properties: {}
+
+Key: ('WROTE', 'relationship')
+Properties: {}
+
+Key: ('REVIEWS', 'relationship')
+Properties: {}

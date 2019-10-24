@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "USED_IN",
+    "description": "USED_IN relationship",
+    "$id": "used_in.json",
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "<id>"
+    ],
+    "additionalProperties": false
+}

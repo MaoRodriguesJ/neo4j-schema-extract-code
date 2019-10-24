@@ -1,0 +1,60 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Review",
+    "description": "Review node",
+    "$id": "review.json",
+    "definitions": {
+        "reviews": {
+            "type": "object",
+            "$ref": "reviews.json"
+        },
+        "listing": {
+            "type": "object",
+            "$ref": "listing.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "date": {
+            "type": "string"
+        },
+        "review_id": {
+            "type": "string"
+        },
+        "comments": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/reviews"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/listing"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "<id>",
+        "date",
+        "review_id",
+        "comments",
+        "relationships"
+    ],
+    "additionalProperties": false
+}

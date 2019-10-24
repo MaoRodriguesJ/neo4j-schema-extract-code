@@ -1,0 +1,21 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Person",
+    "description": "Person node",
+    "$id": "person.json",
+    "definitions": {},
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "name": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "<id>",
+        "name"
+    ],
+    "additionalProperties": false
+}

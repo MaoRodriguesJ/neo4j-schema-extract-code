@@ -1,0 +1,56 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "User",
+    "description": "User node",
+    "$id": "user.json",
+    "definitions": {
+        "wrote": {
+            "type": "object",
+            "$ref": "wrote.json"
+        },
+        "review": {
+            "type": "object",
+            "$ref": "review.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "name": {
+            "type": "string"
+        },
+        "user_id": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/wrote"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/review"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "<id>",
+        "name",
+        "user_id",
+        "relationships"
+    ],
+    "additionalProperties": false
+}

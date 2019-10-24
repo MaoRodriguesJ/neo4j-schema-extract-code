@@ -1,0 +1,77 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Movie",
+    "description": "Movie node",
+    "$id": "movie.json",
+    "definitions": {},
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "studio": {
+            "type": "string"
+        },
+        "releaseDate": {
+            "type": "string"
+        },
+        "imdbId": {
+            "type": "string"
+        },
+        "runtime": {
+            "type": "number"
+        },
+        "description": {
+            "type": "string"
+        },
+        "language": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        },
+        "version": {
+            "type": "number"
+        },
+        "trailer": {
+            "type": "string"
+        },
+        "imageUrl": {
+            "type": "string"
+        },
+        "genre": {
+            "type": "string"
+        },
+        "tagline": {
+            "type": "string"
+        },
+        "lastModified": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        },
+        "homepage": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "<id>",
+        "studio",
+        "releaseDate",
+        "imdbId",
+        "runtime",
+        "description",
+        "language",
+        "title",
+        "version",
+        "trailer",
+        "imageUrl",
+        "genre",
+        "tagline",
+        "lastModified",
+        "id",
+        "homepage"
+    ],
+    "additionalProperties": false
+}

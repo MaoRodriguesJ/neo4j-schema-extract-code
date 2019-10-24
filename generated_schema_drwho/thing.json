@@ -1,0 +1,21 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Thing",
+    "description": "Thing node",
+    "$id": "thing.json",
+    "definitions": {},
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "thing": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "<id>",
+        "thing"
+    ],
+    "additionalProperties": false
+}

@@ -1,0 +1,215 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Character",
+    "description": "Character node",
+    "$id": "character.json",
+    "definitions": {
+        "is_a": {
+            "type": "object",
+            "$ref": "is_a.json"
+        },
+        "species": {
+            "type": "object",
+            "$ref": "species.json"
+        },
+        "loves": {
+            "type": "object",
+            "$ref": "loves.json"
+        },
+        "character": {
+            "type": "object",
+            "$ref": "character.json"
+        },
+        "comes_from": {
+            "type": "object",
+            "$ref": "comes_from.json"
+        },
+        "planet": {
+            "type": "object",
+            "$ref": "planet.json"
+        },
+        "owns": {
+            "type": "object",
+            "$ref": "owns.json"
+        },
+        "thing": {
+            "type": "object",
+            "$ref": "thing.json"
+        },
+        "enemy_of": {
+            "type": "object",
+            "$ref": "enemy_of.json"
+        },
+        "ally_of": {
+            "type": "object",
+            "$ref": "ally_of.json"
+        },
+        "appeared_in": {
+            "type": "object",
+            "$ref": "appeared_in.json"
+        },
+        "episode": {
+            "type": "object",
+            "$ref": "episode.json"
+        },
+        "companion_of": {
+            "type": "object",
+            "$ref": "companion_of.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "character": {
+            "type": "string"
+        },
+        "wikipedia": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/is_a"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/species"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/loves"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/character"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/comes_from"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/planet"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/owns"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/thing"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/enemy_of"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/character"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/enemy_of"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/species"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/ally_of"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/species"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/ally_of"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/character"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/appeared_in"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/episode"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/companion_of"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/character"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "<id>",
+        "character",
+        "wikipedia"
+    ],
+    "additionalProperties": false
+}

@@ -88,7 +88,6 @@ class Parser():
         parsed_relationship["$id"] = str(key[0]).lower() + '.json'
         parsed_relationship["type"] = "object"
         parsed_relationship["properties"] = dict()
-        parsed_relationship["properties"]["id"] = {"type" : "number"}
         parsed_relationship["required"] = list()
         parsed_relationship["required"].append("<id>")
         parsed_relationship["properties"]["<id>"] = {"type" : "number"}

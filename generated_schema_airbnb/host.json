@@ -1,0 +1,68 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Host",
+    "description": "Host node",
+    "$id": "host.json",
+    "definitions": {
+        "hosts": {
+            "type": "object",
+            "$ref": "hosts.json"
+        },
+        "listing": {
+            "type": "object",
+            "$ref": "listing.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "name": {
+            "type": "string"
+        },
+        "superhost": {
+            "type": "boolean"
+        },
+        "image": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "host_id": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/hosts"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/listing"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "<id>",
+        "name",
+        "superhost",
+        "image",
+        "location",
+        "host_id",
+        "relationships"
+    ],
+    "additionalProperties": false
+}

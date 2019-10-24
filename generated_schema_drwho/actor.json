@@ -1,0 +1,102 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Actor",
+    "description": "Actor node",
+    "$id": "actor.json",
+    "definitions": {
+        "appeared_in": {
+            "type": "object",
+            "$ref": "appeared_in.json"
+        },
+        "episode": {
+            "type": "object",
+            "$ref": "episode.json"
+        },
+        "regenerated_to": {
+            "type": "object",
+            "$ref": "regenerated_to.json"
+        },
+        "actor": {
+            "type": "object",
+            "$ref": "actor.json"
+        },
+        "played": {
+            "type": "object",
+            "$ref": "played.json"
+        },
+        "character": {
+            "type": "object",
+            "$ref": "character.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "actor": {
+            "type": "string"
+        },
+        "salary": {
+            "type": "number"
+        },
+        "wikipedia": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/appeared_in"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/episode"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/regenerated_to"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/actor"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/played"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/character"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "<id>",
+        "actor",
+        "salary",
+        "wikipedia",
+        "relationships"
+    ],
+    "additionalProperties": false
+}

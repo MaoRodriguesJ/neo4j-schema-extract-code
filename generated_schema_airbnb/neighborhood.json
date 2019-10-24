@@ -1,0 +1,25 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Neighborhood",
+    "description": "Neighborhood node",
+    "$id": "neighborhood.json",
+    "definitions": {},
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "name": {
+            "type": "string"
+        },
+        "neighborhood_id": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "<id>",
+        "name",
+        "neighborhood_id"
+    ],
+    "additionalProperties": false
+}

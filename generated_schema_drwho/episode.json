@@ -1,0 +1,71 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Episode",
+    "description": "Episode node",
+    "$id": "episode.json",
+    "definitions": {
+        "next": {
+            "type": "object",
+            "$ref": "next.json"
+        },
+        "episode": {
+            "type": "object",
+            "$ref": "episode.json"
+        },
+        "previous": {
+            "type": "object",
+            "$ref": "previous.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "title": {
+            "type": "string"
+        },
+        "episode": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/next"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/episode"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/previous"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/episode"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "<id>",
+        "title",
+        "episode"
+    ],
+    "additionalProperties": false
+}

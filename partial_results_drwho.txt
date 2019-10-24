@@ -1,0 +1,158 @@
+
+Nodes: 1 060
+Relationships: 2 286
+Time: real	0m3,933s
+      user	0m1,320s
+      sys	0m0,103s
+
+
+
+ ---- Done Grouping Nodes ----
+
+Key: (frozenset({'Actor'}), 'node')
+Properties: {('actor', <class 'str'>): True, ('salary', <class 'int'>): False, ('wikipedia', <class 'str'>): False}
+Relationships: {('APPEARED_IN', frozenset({'Episode'})): False, ('REGENERATED_TO', frozenset({'Actor'})): False, ('PLAYED', frozenset({'Character'})): True}
+
+Key: (frozenset({'Character'}), 'node')
+Properties: {('character', <class 'str'>): True, ('wikipedia', <class 'str'>): False}
+Relationships: {('IS_A', frozenset({'Species'})): False, ('LOVES', frozenset({'Character'})): False, ('COMES_FROM', frozenset({'Planet'})): False, ('OWNS', frozenset({'Thing'})): False, ('ENEMY_OF', frozenset({'Character'})): False, ('ENEMY_OF', frozenset({'Species'})): False, ('ALLY_OF', frozenset({'Species'})): False, ('ALLY_OF', frozenset({'Character'})): False, ('APPEARED_IN', frozenset({'Episode'})): False, ('COMPANION_OF', frozenset({'Character'})): False}
+
+Key: (frozenset({'Episode'}), 'node')
+Properties: {('title', <class 'str'>): True, ('episode', <class 'str'>): True}
+Relationships: {('NEXT', frozenset({'Episode'})): False, ('PREVIOUS', frozenset({'Episode'})): False}
+
+Key: (frozenset({'Species'}), 'node')
+Properties: {('species', <class 'str'>): True}
+Relationships: {('ENEMY_OF', frozenset({'Species'})): False, ('COMES_FROM', frozenset({'Planet'})): False, ('ENEMY_OF', frozenset({'Character'})): False, ('APPEARED_IN', frozenset({'Episode'})): False, ('ALLY_OF', frozenset({'Character'})): False}
+
+Key: (frozenset({'Planet'}), 'node')
+Properties: {('planet', <class 'str'>): True}
+Relationships: {}
+
+Key: (frozenset({'Thing'}), 'node')
+Properties: {('thing', <class 'str'>): True}
+Relationships: {}
+
+ ---- Done Grouping Relationships ----
+
+Key: ('IS_A', 'relationship')
+Properties: {}
+
+Key: ('LOVES', 'relationship')
+Properties: {}
+
+Key: ('COMES_FROM', 'relationship')
+Properties: {}
+
+Key: ('OWNS', 'relationship')
+Properties: {}
+
+Key: ('PLAYED', 'relationship')
+Properties: {}
+
+Key: ('REGENERATED_TO', 'relationship')
+Properties: {('year', <class 'int'>): False}
+
+Key: ('COMPANION_OF', 'relationship')
+Properties: {}
+
+Key: ('ENEMY_OF', 'relationship')
+Properties: {}
+
+Key: ('ALLY_OF', 'relationship')
+Properties: {}
+
+Key: ('APPEARED_IN', 'relationship')
+Properties: {}
+
+Key: ('NEXT', 'relationship')
+Properties: {}
+
+Key: ('PREVIOUS', 'relationship')
+Properties: {}
+
+Key: ('USED_IN', 'relationship')
+Properties: {}
+
+Key: ('MEMBER_OF', 'relationship')
+Properties: {}
+
+Key: ('ORIGINAL_PROP', 'relationship')
+Properties: {}
+
+Key: ('COMPOSED_OF', 'relationship')
+Properties: {}
+
+ ---- Done Extracting ----
+
+Key: frozenset({'Planet'})
+Properties: {('planet', <class 'str'>): True}
+Relationships: {}
+
+Key: frozenset({'Character'})
+Properties: {('character', <class 'str'>): True, ('wikipedia', <class 'str'>): False}
+Relationships: {('IS_A', frozenset({'Species'})): False, ('LOVES', frozenset({'Character'})): False, ('COMES_FROM', frozenset({'Planet'})): False, ('OWNS', frozenset({'Thing'})): False, ('ENEMY_OF', frozenset({'Character'})): False, ('ENEMY_OF', frozenset({'Species'})): False, ('ALLY_OF', frozenset({'Species'})): False, ('ALLY_OF', frozenset({'Character'})): False, ('APPEARED_IN', frozenset({'Episode'})): False, ('COMPANION_OF', frozenset({'Character'})): False}
+
+Key: frozenset({'Thing'})
+Properties: {('thing', <class 'str'>): True}
+Relationships: {}
+
+Key: frozenset({'Actor'})
+Properties: {('actor', <class 'str'>): True, ('salary', <class 'int'>): False, ('wikipedia', <class 'str'>): False}
+Relationships: {('APPEARED_IN', frozenset({'Episode'})): False, ('REGENERATED_TO', frozenset({'Actor'})): False, ('PLAYED', frozenset({'Character'})): True}
+
+Key: frozenset({'Species'})
+Properties: {('species', <class 'str'>): True}
+Relationships: {('ENEMY_OF', frozenset({'Species'})): False, ('COMES_FROM', frozenset({'Planet'})): False, ('ENEMY_OF', frozenset({'Character'})): False, ('APPEARED_IN', frozenset({'Episode'})): False, ('ALLY_OF', frozenset({'Character'})): False}
+
+Key: frozenset({'Episode'})
+Properties: {('title', <class 'str'>): True, ('episode', <class 'str'>): True}
+Relationships: {('NEXT', frozenset({'Episode'})): False, ('PREVIOUS', frozenset({'Episode'})): False}
+
+Key: ('IS_A', 'relationship')
+Properties: {}
+
+Key: ('LOVES', 'relationship')
+Properties: {}
+
+Key: ('COMES_FROM', 'relationship')
+Properties: {}
+
+Key: ('OWNS', 'relationship')
+Properties: {}
+
+Key: ('PLAYED', 'relationship')
+Properties: {}
+
+Key: ('REGENERATED_TO', 'relationship')
+Properties: {('year', <class 'int'>): False}
+
+Key: ('COMPANION_OF', 'relationship')
+Properties: {}
+
+Key: ('ENEMY_OF', 'relationship')
+Properties: {}
+
+Key: ('ALLY_OF', 'relationship')
+Properties: {}
+
+Key: ('APPEARED_IN', 'relationship')
+Properties: {}
+
+Key: ('NEXT', 'relationship')
+Properties: {}
+
+Key: ('PREVIOUS', 'relationship')
+Properties: {}
+
+Key: ('USED_IN', 'relationship')
+Properties: {}
+
+Key: ('MEMBER_OF', 'relationship')
+Properties: {}
+
+Key: ('ORIGINAL_PROP', 'relationship')
+Properties: {}
+
+Key: ('COMPOSED_OF', 'relationship')
+Properties: {}
