@@ -2,9 +2,10 @@
 Nodes:          1 060
 Relationships:  2 286
 
-Time: real	0m3,933s
-      user	0m1,320s
-      sys	0m0,103s
+Time: real	0m2,914s
+      user	0m0,810s
+      sys	0m0,055s
+
 
 
 

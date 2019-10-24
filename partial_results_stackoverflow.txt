@@ -1,10 +1,11 @@
 
-Nodes:           75 398
-Relationships:  121 594
+Nodes:            690 656
+Relationships:  1 408 205
 
-Time: real	1m55,433s
-      user	1m7,903s
-      sys	0m4,813s
+Time: real	8m43,249s
+      user	5m53,578s
+     sys	0m19,363s
+
 
 
  ---- Done Grouping Nodes ----

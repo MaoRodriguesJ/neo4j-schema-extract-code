@@ -5,7 +5,7 @@ function docker_run_apoc {
         --publish=7474:7474 \
         --publish=7687:7687 \
         --volume=$PWD/data:/data \
-        --volume=$PWD/logs:$PWD/logs \
+        --volume=$PWD/logs:/logs \
         --env=NEO4J_dbms_allow__upgrade=true \
         --env 'NEO4JLABS_PLUGINS=["apoc"]' \
         --name=$1 \
@@ -17,7 +17,7 @@ function docker_run {
         --publish=7474:7474 \
         --publish=7687:7687 \
         --volume=$PWD/data:/data \
-        --volume=$PWD/logs:$PWD/logs \
+        --volume=$PWD/logs:/logs \
         --env=NEO4J_dbms_allow__upgrade=true \
         --name=$1 \
     neo4j
