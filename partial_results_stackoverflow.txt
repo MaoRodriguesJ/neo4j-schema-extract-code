@@ -1,0 +1,70 @@
+
+Nodes:           75 398
+Relationships:  121 594
+
+Time: real	1m55,433s
+      user	1m7,903s
+      sys	0m4,813s
+
+
+ ---- Done Grouping Nodes ----
+
+Key: (frozenset({'Question'}), 'node')
+Properties: {('share_link', <class 'str'>): True, ('favorite_count', <class 'int'>): True, ('id', <class 'int'>): True, ('creation_date', <class 'int'>): True, ('title', <class 'str'>): True}
+Relationships: {('TAGGED', frozenset({'Tag'})): True}
+
+Key: (frozenset({'User'}), 'node')
+Properties: {('display_name', <class 'str'>): True, ('id', <class 'int'>): False, ('id', <class 'str'>): False}
+Relationships: {('ASKED', frozenset({'Question'})): False, ('PROVIDED', frozenset({'Answer'})): False}
+
+Key: (frozenset({'Tag'}), 'node')
+Properties: {('name', <class 'str'>): True}
+Relationships: {}
+
+Key: (frozenset({'Answer'}), 'node')
+Properties: {('id', <class 'int'>): True}
+Relationships: {('ANSWERED', frozenset({'Question'})): True}
+
+ ---- Done Grouping Relationships ----
+
+Key: ('ASKED', 'relationship')
+Properties: {}
+
+Key: ('TAGGED', 'relationship')
+Properties: {}
+
+Key: ('ANSWERED', 'relationship')
+Properties: {}
+
+Key: ('PROVIDED', 'relationship')
+Properties: {}
+
+ ---- Done Extracting ----
+
+Key: frozenset({'Question'})
+Properties: {('share_link', <class 'str'>): True, ('favorite_count', <class 'int'>): True, ('id', <class 'int'>): True, ('creation_date', <class 'int'>): True, ('title', <class 'str'>): True}
+Relationships: {('TAGGED', frozenset({'Tag'})): True}
+
+Key: frozenset({'Answer'})
+Properties: {('id', <class 'int'>): True}
+Relationships: {('ANSWERED', frozenset({'Question'})): True}
+
+Key: frozenset({'Tag'})
+Properties: {('name', <class 'str'>): True}
+Relationships: {}
+
+Key: frozenset({'User'})
+Properties: {('display_name', <class 'str'>): True, ('id', <class 'int'>): False, ('id', <class 'str'>): False}
+Relationships: {('ASKED', frozenset({'Question'})): False, ('PROVIDED', frozenset({'Answer'})): False}
+
+Key: ('ASKED', 'relationship')
+Properties: {}
+
+Key: ('TAGGED', 'relationship')
+Properties: {}
+
+Key: ('ANSWERED', 'relationship')
+Properties: {}
+
+Key: ('PROVIDED', 'relationship')
+Properties: {}

@@ -57,7 +57,7 @@ function create_docker_folder {
         ;;
     "-s")
         create_s
-        echo "Creating small_test dataset!"
+        echo "Creating stackoverflow dataset!"
         docker_run_apoc "$2"
         ;;
     *)

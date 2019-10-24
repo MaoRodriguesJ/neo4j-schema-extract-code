@@ -1,0 +1,75 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "User",
+    "description": "User node",
+    "$id": "user.json",
+    "definitions": {
+        "asked": {
+            "type": "object",
+            "$ref": "asked.json"
+        },
+        "question": {
+            "type": "object",
+            "$ref": "question.json"
+        },
+        "provided": {
+            "type": "object",
+            "$ref": "provided.json"
+        },
+        "answer": {
+            "type": "object",
+            "$ref": "answer.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "display_name": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/asked"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/question"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/provided"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/answer"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "required": [
+        "<id>",
+        "display_name",
+        "id"
+    ],
+    "additionalProperties": false
+}

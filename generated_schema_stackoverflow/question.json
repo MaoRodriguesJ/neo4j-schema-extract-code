@@ -1,0 +1,68 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Question",
+    "description": "Question node",
+    "$id": "question.json",
+    "definitions": {
+        "tagged": {
+            "type": "object",
+            "$ref": "tagged.json"
+        },
+        "tag": {
+            "type": "object",
+            "$ref": "tag.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "share_link": {
+            "type": "string"
+        },
+        "favorite_count": {
+            "type": "number"
+        },
+        "id": {
+            "type": "number"
+        },
+        "creation_date": {
+            "type": "number"
+        },
+        "title": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/tagged"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/tag"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "<id>",
+        "share_link",
+        "favorite_count",
+        "id",
+        "creation_date",
+        "title",
+        "relationships"
+    ],
+    "additionalProperties": false
+}

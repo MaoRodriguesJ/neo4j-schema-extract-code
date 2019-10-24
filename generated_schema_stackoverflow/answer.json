@@ -1,0 +1,52 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Answer",
+    "description": "Answer node",
+    "$id": "answer.json",
+    "definitions": {
+        "answered": {
+            "type": "object",
+            "$ref": "answered.json"
+        },
+        "question": {
+            "type": "object",
+            "$ref": "question.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "id": {
+            "type": "number"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/answered"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/question"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "<id>",
+        "id",
+        "relationships"
+    ],
+    "additionalProperties": false
+}

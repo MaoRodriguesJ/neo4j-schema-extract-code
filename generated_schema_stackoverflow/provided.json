@@ -1,0 +1,16 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "PROVIDED",
+    "description": "PROVIDED relationship",
+    "$id": "provided.json",
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "<id>"
+    ],
+    "additionalProperties": false
+}
