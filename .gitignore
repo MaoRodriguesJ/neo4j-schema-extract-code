@@ -109,4 +109,3 @@ venv.bak/
 #Project Ignores
 data/
 logs/
-*.txt

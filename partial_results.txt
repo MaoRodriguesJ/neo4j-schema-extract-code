@@ -1,0 +1,70 @@
+
+ ---- Done Grouping Nodes ----
+
+Key: (frozenset({'Movie'}), 'node')
+Properties: {('studio', <class 'str'>): False, ('releaseDate', <class 'str'>): False, ('imdbId', <class 'str'>): False, ('runtime', <class 'int'>): False, ('description', <class 'str'>): True, ('language', <class 'str'>): True, ('title', <class 'str'>): True, ('version', <class 'int'>): True, ('trailer', <class 'str'>): False, ('imageUrl', <class 'str'>): False, ('genre', <class 'str'>): False, ('tagline', <class 'str'>): True, ('lastModified', <class 'str'>): True, ('id', <class 'str'>): True, ('homepage', <class 'str'>): True}
+Relationships: {}
+
+Key: (frozenset({'User', 'Person'}), 'node')
+Properties: {('name', <class 'str'>): True, ('password', <class 'str'>): True, ('login', <class 'str'>): True, ('roles', <class 'str'>): True}
+Relationships: {('RATED', frozenset({'Movie'})): False, ('FRIEND', frozenset({'User', 'Person'})): False}
+
+Key: (frozenset({'Actor', 'Person'}), 'node')
+Properties: {('birthday', <class 'str'>): False, ('birthplace', <class 'str'>): False, ('name', <class 'str'>): True, ('lastModified', <class 'str'>): True, ('id', <class 'str'>): True, ('biography', <class 'str'>): True, ('version', <class 'int'>): True, ('profileImageUrl', <class 'str'>): False}
+Relationships: {('ACTS_IN', frozenset({'Movie'})): True}
+
+Key: (frozenset({'Director', 'Person'}), 'node')
+Properties: {('birthday', <class 'str'>): False, ('birthplace', <class 'str'>): False, ('name', <class 'str'>): True, ('lastModified', <class 'str'>): True, ('id', <class 'str'>): True, ('biography', <class 'str'>): True, ('version', <class 'int'>): True, ('profileImageUrl', <class 'str'>): False}
+Relationships: {('DIRECTED', frozenset({'Movie'})): True}
+
+Key: (frozenset({'Actor', 'Director', 'Person'}), 'node')
+Properties: {('birthday', <class 'str'>): False, ('birthplace', <class 'str'>): False, ('name', <class 'str'>): True, ('lastModified', <class 'str'>): True, ('id', <class 'str'>): True, ('biography', <class 'str'>): True, ('version', <class 'int'>): True, ('profileImageUrl', <class 'str'>): False}
+Relationships: {('ACTS_IN', frozenset({'Movie'})): True, ('DIRECTED', frozenset({'Movie'})): True}
+
+ ---- Done Grouping Relationships ----
+
+Key: ('FRIEND', 'relationship')
+Properties: {}
+
+Key: ('DIRECTED', 'relationship')
+Properties: {}
+
+Key: ('ACTS_IN', 'relationship')
+Properties: {('name', <class 'str'>): True}
+
+Key: ('RATED', 'relationship')
+Properties: {('comment', <class 'str'>): False, ('stars', <class 'int'>): True}
+
+ ---- Done Extracting ----
+
+Key: frozenset({'Movie'})
+Properties: {('studio', <class 'str'>): False, ('releaseDate', <class 'str'>): False, ('imdbId', <class 'str'>): False, ('runtime', <class 'int'>): False, ('description', <class 'str'>): True, ('language', <class 'str'>): True, ('title', <class 'str'>): True, ('version', <class 'int'>): True, ('trailer', <class 'str'>): False, ('imageUrl', <class 'str'>): False, ('genre', <class 'str'>): False, ('tagline', <class 'str'>): True, ('lastModified', <class 'str'>): True, ('id', <class 'str'>): True, ('homepage', <class 'str'>): True}
+Relationships: {}
+
+Key: frozenset({'Person'})
+Properties: {('name', <class 'str'>): True}
+Relationships: {}
+
+Key: frozenset({'Director'})
+Properties: {('id', <class 'str'>): True, ('birthplace', <class 'str'>): False, ('version', <class 'int'>): True, ('profileImageUrl', <class 'str'>): False, ('biography', <class 'str'>): True, ('lastModified', <class 'str'>): True, ('birthday', <class 'str'>): False}
+Relationships: {('DIRECTED', frozenset({'Movie'})): True}
+
+Key: frozenset({'User'})
+Properties: {('password', <class 'str'>): True, ('login', <class 'str'>): True, ('roles', <class 'str'>): True}
+Relationships: {('RATED', frozenset({'Movie'})): False, ('FRIEND', frozenset({'Person'})): False, ('FRIEND', frozenset({'User'})): False}
+
+Key: frozenset({'Actor'})
+Properties: {('id', <class 'str'>): True, ('birthplace', <class 'str'>): False, ('version', <class 'int'>): True, ('profileImageUrl', <class 'str'>): False, ('biography', <class 'str'>): True, ('lastModified', <class 'str'>): True, ('birthday', <class 'str'>): False}
+Relationships: {('ACTS_IN', frozenset({'Movie'})): True}
+
+Key: ('FRIEND', 'relationship')
+Properties: {}
+
+Key: ('DIRECTED', 'relationship')
+Properties: {}
+
+Key: ('ACTS_IN', 'relationship')
+Properties: {('name', <class 'str'>): True}
+
+Key: ('RATED', 'relationship')
+Properties: {('comment', <class 'str'>): False, ('stars', <class 'int'>): True}

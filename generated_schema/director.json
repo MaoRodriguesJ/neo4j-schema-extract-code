@@ -1,0 +1,76 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema#",
+    "title": "Director",
+    "description": "Director node",
+    "$id": "director.json",
+    "definitions": {
+        "directed": {
+            "type": "object",
+            "$ref": "directed.json"
+        },
+        "movie": {
+            "type": "object",
+            "$ref": "movie.json"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "<id>": {
+            "type": "number"
+        },
+        "id": {
+            "type": "string"
+        },
+        "birthplace": {
+            "type": "string"
+        },
+        "version": {
+            "type": "number"
+        },
+        "profileImageUrl": {
+            "type": "string"
+        },
+        "biography": {
+            "type": "string"
+        },
+        "lastModified": {
+            "type": "string"
+        },
+        "birthday": {
+            "type": "string"
+        },
+        "relationships": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/directed"
+                            },
+                            {
+                                "type": "object",
+                                "$ref": "#/definitions/movie"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "<id>",
+        "id",
+        "birthplace",
+        "version",
+        "profileImageUrl",
+        "biography",
+        "lastModified",
+        "birthday",
+        "relationships"
+    ],
+    "additionalProperties": false
+}
