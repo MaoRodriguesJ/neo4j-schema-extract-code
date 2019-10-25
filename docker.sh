@@ -1,5 +1,5 @@
 
-#need neo4j docker v > 3.5.10 i guess
+#need neo4j docker v > 3.5.10 i guess to run apoc
 function docker_run_apoc {
     docker run \
         --publish=7474:7474 \
@@ -30,17 +30,17 @@ function create_folder {
 
 function create_d {
     create_folder
-    cp -r drwho/* data/databases/graph.db
+    cp -r databases/drwho/* data/databases/graph.db
 }
 
 function create_c {
     create_folder
-    cp -r cineasts/* data/databases/graph.db
+    cp -r databases/cineasts/* data/databases/graph.db
 }
 
 function create_s {
     create_folder
-    cp -r stackoverflow/* data/databases/graph.db
+    cp -r databases/stackoverflow/* data/databases/graph.db
 }
 
 function create_docker_folder {

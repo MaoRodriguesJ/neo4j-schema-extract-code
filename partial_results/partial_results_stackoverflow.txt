@@ -7,7 +7,6 @@ Time: real	8m43,249s
      sys	0m19,363s
 
 
-
  ---- Done Grouping Nodes ----
 
 Key: (frozenset({'Question'}), 'node')

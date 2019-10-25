@@ -5,9 +5,7 @@ Relationships:  2 286
 Time: real	0m2,914s
       user	0m0,810s
       sys	0m0,055s
-
-
-
+      
 
  ---- Done Grouping Nodes ----
 

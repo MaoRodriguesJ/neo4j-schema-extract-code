@@ -109,5 +109,5 @@ venv.bak/
 #Project Ignores
 data/
 logs/
-stackoverflow/
+databases/stackoverflow/
 generated_schema/
