@@ -87,7 +87,7 @@ class Extractor():
 
                 self._process_new_relationships(new_relationships, label)
 
-                new_grouping[new_key] = {'props' : new_props, 'relationships' : new_relationships}
+                new_grouping[new_key] = {'props' : new_props, 'relationships' : new_relationships, 'allOf' : label}
             else:
                 new_grouping[key] = grouping[key]
 

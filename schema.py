@@ -51,6 +51,9 @@ class Schema():
             print('Properties: ' +str(grouping[k]['props']))
             if 'relationships' in grouping[k].keys():
                 print('Relationships: ' + str(grouping[k]['relationships']))
+            
+            if 'allOf' in grouping[k].keys():
+                print('allOf: ' + str(grouping[k]['allOf']))
 
 
 if __name__ == '__main__':

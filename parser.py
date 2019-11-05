@@ -25,11 +25,12 @@ class Parser():
         parsed_node["$id"] = self._build_node_id(key) + '.json'
         parsed_node["definitions"] = dict()
         parsed_node["type"] = "object"
+        if 'allOf' in node.keys():
+            parsed_node['allOf'] = [{"$ref" : self._build_node_id(node['allOf']) + '.json'}]
         parsed_node["properties"] = dict()
         parsed_node["required"] = list()
         parsed_node["required"].append("<id>")
         parsed_node["properties"]["<id>"] = {"type" : "number"}
-        parsed_node["additionalProperties"] = False
 
         for key in node['props']:
             typed = self._check_type(key[1])
